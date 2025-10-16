@@ -10,7 +10,5 @@ namespace Localhost.AI.Kaonashi
         public List<string> Must { get; set; } = new List<string>();
         public List<string> MustNot { get; set; } = new List<string>();
         public string SystemPrompt { get; set; } = string.Empty;
-
     }
-
 }
