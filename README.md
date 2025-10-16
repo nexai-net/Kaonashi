@@ -5,6 +5,8 @@ It is developed in **WinForms (.NET Core 8.0)** and designed to provide a lightw
 
 ---
 
+![Mainform from Kaonashi](https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEh3EtKn24pa0I7aYk0RpNqrHi9z8Vg8I8v4lI_A_II-HVZz3y-NW039wE4rbFPsaRk_jI82Vamf1gv3wsca8ZX6VQCCcWHfOgAN5ayjWXhX5KhJgNY1ClBlsVEzHNl58mMd4IT37i2_IAOhB1jjPdNBYMsD0cLl9-ELRJMO1C53t4xNMkufA9lDlMciYI8/s1533/2025-10-16%2017_30_24-Kaonashi.png) 
+
 ## 💡 Overview
 
 > 🧠 *I’m an AI Architect, not a full-time developer — and yes, Kaonashi also leverages AI in its own development process.* 🤖  
