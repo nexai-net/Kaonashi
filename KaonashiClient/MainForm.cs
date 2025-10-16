@@ -413,6 +413,291 @@ namespace Localhost.AI.Kaonashi
                 return;
             }
             
+            // Check for symbolic encoder manager command
+            if (message.Equals("/encode", StringComparison.OrdinalIgnoreCase) || 
+                message.Equals("/encoder", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                var symbolicEncoderManagerForm = new SymbolicEncoderManagerForm(config.CompletionHost, config.CompletionPort);
+                symbolicEncoderManagerForm.Show();
+                return;
+            }
+            
+            // Check for symbolic decoder manager command
+            if (message.Equals("/decode", StringComparison.OrdinalIgnoreCase) || 
+                message.Equals("/decoder", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                var symbolicDecoderManagerForm = new SymbolicDecoderManagerForm(config.CompletionHost, config.CompletionPort);
+                symbolicDecoderManagerForm.Show();
+                return;
+            }
+            
+            // Check for symbolic processor manager command
+            if (message.Equals("/process", StringComparison.OrdinalIgnoreCase) || 
+                message.Equals("/processor", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                var symbolicProcessorManagerForm = new SymbolicProcessorManagerForm(config.CompletionHost, config.CompletionPort);
+                symbolicProcessorManagerForm.Show();
+                return;
+            }
+            
+            // Check for Kibana command
+            if (message.Equals("/kibana", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "http://localhost:5601/app/home#/",
+                        UseShellExecute = true
+                    });
+                    statusLabel.Text = "Opening Kibana in web browser...";
+                    statusLabel.ForeColor = Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to open Kibana: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for Orleans monitoring command
+            if (message.Equals("/orleans", StringComparison.OrdinalIgnoreCase) || 
+                message.Equals("/monitor", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "http://localhost:9090/",
+                        UseShellExecute = true
+                    });
+                    statusLabel.Text = "Opening Orleans monitoring dashboard...";
+                    statusLabel.ForeColor = Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to open Orleans monitoring: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for Nexai website command
+            if (message.Equals("/nexai", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "https://www.nexai.net/",
+                        UseShellExecute = true
+                    });
+                    statusLabel.Text = "Opening Nexai website...";
+                    statusLabel.ForeColor = Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to open Nexai website: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for help command
+            if (message.Equals("/help", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                var helpMessage = @"Available Commands:
+
+📋 MANAGEMENT FORMS:
+/entities or /entity - Open Entity Manager
+/encode or /encoder - Open Symbolic Encoder Manager
+/decode or /decoder - Open Symbolic Decoder Manager
+/process or /processor - Open Symbolic Processor Manager
+/cache - Open Cache Manager
+/news - Open News Viewer
+/json - Open JSON Client
+
+🌐 WEB BROWSER COMMANDS:
+/kibana - Open Kibana dashboard (localhost:5601)
+/orleans or /monitor - Open Orleans monitoring (localhost:9090)
+/nexai - Open Nexai website (nexai.net)
+/youtube - Open YouTube channel (@lelabia)
+
+⚙️ APPLICATION COMMANDS:
+/settings - Open Settings
+/word - Launch Microsoft Word (Windows 10/11)
+/excel - Launch Microsoft Excel (Windows 10/11)
+/mail or /outlook - Launch Microsoft Outlook (Windows 10/11)
+/clear - Clear chat history
+/exit - Exit application
+
+Type any command and press Enter to execute it.";
+                
+                chatDisplay.AppendText($"\n🤖 Kaonashi: {helpMessage}\n");
+                chatDisplay.ScrollToCaret();
+                statusLabel.Text = "Help displayed";
+                statusLabel.ForeColor = Color.Blue;
+                return;
+            }
+            
+            // Check for settings command
+            if (message.Equals("/settings", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    var settingsForm = new SettingsForm(config);
+                    settingsForm.Show();
+                    statusLabel.Text = "Settings form opened";
+                    statusLabel.ForeColor = Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to open settings: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for Word command
+            if (message.Equals("/word", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    // Check if running on Windows 10 or 11
+                    var osVersion = Environment.OSVersion;
+                    var isWindows10Or11 = osVersion.Platform == PlatformID.Win32NT && 
+                                         (osVersion.Version.Major == 10);
+                    
+                    if (isWindows10Or11)
+                    {
+                        // Try to launch Microsoft Word
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = "winword.exe",
+                            UseShellExecute = true
+                        });
+                        statusLabel.Text = "Microsoft Word launched";
+                        statusLabel.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        statusLabel.Text = "Word command only available on Windows 10/11";
+                        statusLabel.ForeColor = Color.Orange;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to launch Word: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for Excel command
+            if (message.Equals("/excel", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    // Check if running on Windows 10 or 11
+                    var osVersion = Environment.OSVersion;
+                    var isWindows10Or11 = osVersion.Platform == PlatformID.Win32NT && 
+                                         (osVersion.Version.Major == 10);
+                    
+                    if (isWindows10Or11)
+                    {
+                        // Try to launch Microsoft Excel
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = "excel.exe",
+                            UseShellExecute = true
+                        });
+                        statusLabel.Text = "Microsoft Excel launched";
+                        statusLabel.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        statusLabel.Text = "Excel command only available on Windows 10/11";
+                        statusLabel.ForeColor = Color.Orange;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to launch Excel: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for Outlook command
+            if (message.Equals("/mail", StringComparison.OrdinalIgnoreCase) || 
+                message.Equals("/outlook", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    // Check if running on Windows 10 or 11
+                    var osVersion = Environment.OSVersion;
+                    var isWindows10Or11 = osVersion.Platform == PlatformID.Win32NT && 
+                                         (osVersion.Version.Major == 10);
+                    
+                    if (isWindows10Or11)
+                    {
+                        // Try to launch Microsoft Outlook
+                        System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                        {
+                            FileName = "outlook.exe",
+                            UseShellExecute = true
+                        });
+                        statusLabel.Text = "Microsoft Outlook launched";
+                        statusLabel.ForeColor = Color.Green;
+                    }
+                    else
+                    {
+                        statusLabel.Text = "Outlook command only available on Windows 10/11";
+                        statusLabel.ForeColor = Color.Orange;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to launch Outlook: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
+            // Check for YouTube command
+            if (message.Equals("/youtube", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                try
+                {
+                    System.Diagnostics.Process.Start(new System.Diagnostics.ProcessStartInfo
+                    {
+                        FileName = "https://www.youtube.com/@lelabia",
+                        UseShellExecute = true
+                    });
+                    statusLabel.Text = "Opening YouTube channel...";
+                    statusLabel.ForeColor = Color.Green;
+                }
+                catch (Exception ex)
+                {
+                    statusLabel.Text = $"Failed to open YouTube: {ex.Message}";
+                    statusLabel.ForeColor = Color.Red;
+                }
+                return;
+            }
+            
             // Check for exit command
             if (message.Equals("/exit", StringComparison.OrdinalIgnoreCase))
             {
