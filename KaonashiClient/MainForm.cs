@@ -521,6 +521,7 @@ namespace Localhost.AI.Kaonashi
 /encode or /encoder - Open Symbolic Encoder Manager
 /decode or /decoder - Open Symbolic Decoder Manager
 /process or /processor - Open Symbolic Processor Manager
+/cv - Open CV Manager
 /cache - Open Cache Manager
 /news - Open News Viewer
 /json - Open JSON Client
@@ -695,6 +696,15 @@ Type any command and press Enter to execute it.";
                     statusLabel.Text = $"Failed to open YouTube: {ex.Message}";
                     statusLabel.ForeColor = Color.Red;
                 }
+                return;
+            }
+            
+            // Check for CV manager command
+            if (message.Equals("/cv", StringComparison.OrdinalIgnoreCase))
+            {
+                messageInput.Clear();
+                var cvManagerForm = new CvManagerForm(config.CompletionHost, config.CompletionPort);
+                cvManagerForm.Show();
                 return;
             }
             
@@ -1993,6 +2003,11 @@ Type any command and press Enter to execute it.";
             {
                 System.Diagnostics.Debug.WriteLine($"Error cleaning up news banner: {ex.Message}");
             }
+        }
+
+        public string GetSelectedModel()
+        {
+            return modelSelector.SelectedItem?.ToString() ?? "llama3.2";
         }
     }
 }
